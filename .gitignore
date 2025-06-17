@@ -1,0 +1,28 @@
+*.log 
+
+
+ # Compiled Lua sources
+ luac.out
+
+ # luarocks build files
+ *.src.rock
+ *.zip
+ *.tar.gz
+
+ # Executables
+ *.exe
+ *.out
+ *.app
+ *.i*86
+ *.x86_64
+ *.hex
+
+ # Lua package manager
+ .luarocks
+
+ # Editor files
+ .idea/
+
+ # OS generated files
+ .DS_Store
+
