@@ -72,3 +72,6 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- [[ Keymaps ]]
 require 'keymaps'
 
+commands_config.setup_user_commands()
+commands_config.setup_autocommands()
+
