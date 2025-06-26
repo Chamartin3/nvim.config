@@ -69,9 +69,21 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 
+
+vim.api.nvim_create_augroup('LazySetup', { clear = true })
+
+-- [[ Plugins ]]
+--
+
+require('lazysetup').setup()
+
+require('style.ui').setup()
+local commands_config = require 'commands'
+
 -- [[ Keymaps ]]
 require 'keymaps'
 
 commands_config.setup_user_commands()
 commands_config.setup_autocommands()
 
+vim.env.NVIM_LISTEN_ADDRESS = vim.v.servername
