@@ -1,3 +1,13 @@
+--- TODO:: Better move the huinks to a qf list
+--- -- Open files  all the files that differ from the specified Branch
+---@param branch string
+function OpenDiffFiles(opts)
+  local branch = opts.args or opts.target_branch_name
+  if not branch or branch == '' then
+    vim.notify('No branch specified', vim.log.levels.ERROR)
+    return
+  end
+
   local current_branch = vim.fn.system('git rev-parse --abbrev-ref HEAD'):gsub('\n', '')
   if not vim.fn.system('git rev-parse --verify ' .. branch):match '^%x+' then
     vim.notify("Branch '" .. branch .. "' does not exist", vim.log.levels.ERROR)
@@ -8,6 +18,7 @@
     vim.notify('Cannot diff against current branch', vim.log.levels.ERROR)
     return
   end
+
   local diff_files = vim.fn.systemlist('git diff --name-only ' .. branch)
   if #diff_files > 0 then
     for _, file in ipairs(diff_files) do
