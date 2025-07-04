@@ -68,7 +68,14 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+vim.opt.verbose = 10
+vim.opt.verbosefile = '/tmp/nvim.log'
 
+vim.g.ai_logs_dir = os.getenv 'AI_LOGS_DIR' or '/tmp/ai-logs'
+
+-- copilot.vim configuration needs to be set here (before the vimscript runs)
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_no_maps = false
 
 vim.api.nvim_create_augroup('LazySetup', { clear = true })
 
@@ -87,3 +94,8 @@ commands_config.setup_user_commands()
 commands_config.setup_autocommands()
 
 vim.env.NVIM_LISTEN_ADDRESS = vim.v.servername
+--
+local nvim_experiments = require 'experiments.current'
+if nvim_experiments and nvim_experiments.init then
+  nvim_experiments.init()
+end
