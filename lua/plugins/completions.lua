@@ -79,7 +79,7 @@ return {
           Copilot = '',
         },
       }
-      cmp.register_source('env_vars', env_vars_completion(cmp).new())
+      -- cmp.register_source('env_vars', env_vars_completion(cmp).new())
       local mapping = cmp.mapping.preset.insert {
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -93,13 +93,11 @@ return {
         }, { 'i', 's' })),
       }
       local sources = cmp.config.sources {
-        { name = 'nvim_lsp', priority = 100 },
-        { name = 'path', priority = 90 },
-        { name = 'copilot', priority = 50 },
         { name = 'nvim_lsp' },
+        { name = 'path' },
+        { name = 'copilot' },
         { name = 'buffer' },
-        { name = 'luasnip' },
-        { name = 'env_vars' },
+        -- { name = 'env_vars' },
         { name = 'luasnip' },
       }
       --- MAIN SETUP FUCTION
@@ -147,7 +145,7 @@ return {
         }, {
           { name = 'cmdline' },
           { name = 'buffer' },
-          { name = 'env_vars' },
+          -- { name = 'env_vars' },
         }),
         matching = { disallow_symbol_nonprefix_matching = false },
       })
@@ -283,21 +281,21 @@ return {
             temperature = 0.75,
             top_p = 0.95,
           },
-          gemini = {
-            endpoint = 'https://generativelanguage.googleapis.com/v1beta/models',
-            model = 'gemini-2.0-flash',
-            -- @see https://ai.google.dev/gemini-api/docs/models/gemini
-            -- model = 'gemini-1.5-pro-exp-0827',
-            -- model = "gemini-1.5-flash",
-            temperature = 0,
-            max_tokens = 4096,
-          },
+          -- gemini = {
+          --   endpoint = 'https://generativelanguage.googleapis.com/v1beta/models',
+          --   model = 'gemini-2.0-flash',
+          --   -- @see https://ai.google.dev/gemini-api/docs/models/gemini
+          --   -- model = 'gemini-1.5-pro-exp-0827',
+          --   -- model = "gemini-1.5-flash",
+          --   temperature = 0,
+          --   max_tokens = 4096,
+          -- },
         },
       }
       local avante = require 'avante'
       avante.setup {
         enabled = true,
-        provider = 'gemini',
+        provider = 'claude', -- Default provider
         providers = providers,
         input = {
           provider = 'snacks',
@@ -309,10 +307,7 @@ return {
         },
         file_selector = {
           provider = 'snacks',
-          provider_opts = {
-            -- Additional snacks.selection options
-            icon = ' ',
-          },
+          provider_opts = {},
         },
 
         windows = {

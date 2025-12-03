@@ -12,47 +12,31 @@ return { -- Autoformat
       desc = '[F]ormat buffer',
     },
   },
-  opts = {
-    notify_on_error = false,
-    formatters_by_ft = {
-      lua = { 'stylua' },
-      javascript = { 'prettier' },
-      typescript = { 'prettier' },
-      javascriptreact = { 'prettier' },
-      typescriptreact = { 'prettier' },
-      svelte = { 'prettier' },
-      css = { 'prettier' },
-      html = { 'prettier' },
-      json = { 'prettier' },
-      yaml = { 'prettier' },
-      -- markdown = { 'prettier' },
-      graphql = { 'prettier' },
-      liquid = { 'prettier' },
-      python = {
-        'autopep8',
-        'black',
+  opts = function()
+    local get_formatters_by_ft = require('lsp.languages.config').get_formatters_by_ft
+    -- formatters_by_ft = {
+    --   lua = { 'stylua' },
+    --   javascript = { 'prettier' },
+    --   typescript = { 'prettier' },
+    --   javascriptreact = { 'prettier' },
+    --   typescriptreact = { 'prettier' },
+    --   svelte = { 'prettier' },
+    return {
+      notify_on_error = false,
+      formatters_by_ft = get_formatters_by_ft(),
+      format_on_save = {
+        timeout_ms = 2000,
+        lsp_fallback = true,
       },
-      htmldjango = { 'djlint' },
-      zsh = {
-        'shfmt',
-        'shellcheck',
-        'prettier',
-      },
-      shell = { 'shfmt', 'shellcheck', 'prettier' },
-    },
-    format_on_save = {
-      lsp_fallback = true,
-      async = false,
-      timeout_ms = 500,
-    },
-    formatters = {
-      prettier = {
-        prepend_args = {
-          '-w',
-          '--vue-indent-script-and-style',
-          '--html-whitespace-sensitivity',
+      formatters = {
+        prettier = {
+          prepend_args = {
+            '-w',
+            '--vue-indent-script-and-style',
+            '--html-whitespace-sensitivity',
+          },
         },
       },
-    },
-  },
+    }
+  end,
 }

@@ -1,62 +1,94 @@
 return {
-  'williamboman/mason.nvim',
-  dependencies = {
-    'williamboman/mason-lspconfig.nvim',
-    'whoissethdaniel/mason-tool-installer.nvim',
-    'folke/neoconf.nvim',
-    'folke/neodev.nvim',
-    'hrsh7th/cmp-nvim-lsp',
-    'neovim/nvim-lspconfig',
-  },
-  config = function()
-    -- import mason
-    local mason = require 'mason'
-    -- import mason-lspconfig
-    local mason_lspconfig = require 'mason-lspconfig'
-    local mason_tool_installer = require 'mason-tool-installer'
+  {
+    'mason-org/mason.nvim',
+    dependencies = {
+      'mason-org/mason-lspconfig.nvim',
+      'whoissethdaniel/mason-tool-installer.nvim',
+      'hrsh7th/cmp-nvim-lsp',
+    },
+    config = function()
+      local mason = require 'mason'
+      local mason_lspconfig = require 'mason-lspconfig'
+      local mason_tool_installer = require 'mason-tool-installer'
 
-    require('neodev').setup {}
-    -- enable mason and configure icons
-    mason.setup {
-      ui = {
-        icons = {
-          package_installed = '✓',
-          package_pending = '➜',
-          package_uninstalled = '✗',
+      mason.setup {
+        ui = {
+          icons = {
+            package_installed = '✓',
+            package_pending = '➜',
+            package_uninstalled = '✗',
+          },
         },
-      },
-    }
+      }
 
-    mason_lspconfig.setup {
-      -- list of servers for mason to install
-      ensure_installed = {
-        'vue_ls',
-        'ts_ls',
-        'gopls',
-        'html',
-        'cssls',
-        'tailwindcss',
-        'svelte',
-        'lua_ls',
-        'graphql',
-        'emmet_ls',
-        'prismals',
-        'pyright',
-        'pylsp',
-      },
+      mason_lspconfig.setup {
+        ensure_installed = {
+          -- Python
+          'ruff',
+          'pyright',
+          'pylsp',
+          -- Lua
+          'lua_ls',
+          -- Go
+          'gopls',
+          -- Web / Frontend
+          'ts_ls',
+          'vtsls',
+          'vue_ls',
+          'svelte',
+          'cssls',
+          'emmet_ls',
+          'eslint',
+          'html',
+          'tailwindcss',
+          'css_variables',
+          -- Data / Config
+          'jsonls',
+          'yamlls',
+          'graphql',
+          'sqlls',
+          -- Shell / Infra
+          'bashls',
+          'dockerls',
+          'docker_compose_language_service',
+          'neocmake',
+          -- Django
+          'django-template-lsp',
+          -- Solidity
+          'solang',
+        },
+      }
+
       mason_tool_installer.setup {
         ensure_installed = {
-          'prettier', -- prettier formatter
-          'stylua', -- lua formatter
-          'isort', -- python formatter
-          'black', -- python formatter
-          'pylint',
+          -- Linters
+          'ruff',
           'eslint_d',
+          'shellcheck',
+          'hadolint',
+          'solhint',
+          -- Formatters
+          'prettier',
           'stylua',
-          'lua-language-server',
-          'bashls',
+          'goimports',
+          'djlint',
+          'yamlfmt',
+          'shfmt',
+          'beautysh',
+          'black',
+          -- Debuggers
+          'debugpy',
+          'delve',
+          'local-lua-debugger-vscode',
+          'bash-debug-adapter',
         },
-      },
-    }
-  end,
+      }
+    end,
+  },
+  {
+    'mason-org/mason-lspconfig.nvim',
+    dependencies = {
+      { 'mason-org/mason.nvim' },
+    },
+  },
 }

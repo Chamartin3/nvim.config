@@ -95,7 +95,7 @@ commands_config.setup_autocommands()
 
 vim.env.NVIM_LISTEN_ADDRESS = vim.v.servername
 --
-local nvim_experiments = require 'experiments.current'
-if nvim_experiments and nvim_experiments.init then
-  nvim_experiments.init()
-end
+-- local nvim_experiments = require 'experiments.current'
+-- if nvim_experiments and nvim_experiments.init then
+--   nvim_experiments.init()
+-- end

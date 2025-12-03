@@ -1,30 +1,36 @@
+-- Treesitter configuration for Neovim
+--
+-- local required_syntaxes = require('lsp.languages.config').get_parsers()
+-- local parsers = require('lsp.languages.config').get_parsers()
+-- vim.notify('Treesitter parsers: ' .. vim.inspect(parsers))
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = {
-        'bash',
-        'c',
-        'scss',
-        'json',
-        'yaml',
-        'svelte',
-        'go',
-        'typescript',
-        'python',
-        'sql',
-        'html',
-        'rust',
-        'lua',
-        'luadoc',
-        'markdown',
-        'markdown_inline',
-        'vim',
-        'vimdoc',
-        'vue',
-        'javascript',
-      },
+      ensure_installed = {}, -- List of parsers to install
+      -- ensure_installed = parsers,
+      -- 'bash',
+      -- 'c',
+      -- 'scss',
+      -- 'json',
+      -- 'yaml',
+      -- 'svelte',
+      -- 'go',
+      -- 'typescript',
+      -- 'python',
+      -- 'sql',
+      -- 'html',
+      -- 'rust',
+      -- 'lua',
+      -- 'luadoc',
+      -- 'markdown',
+      -- 'markdown_inline',
+      -- 'vim',
+      -- 'vimdoc',
+      -- 'vue',
+      -- 'javascript',
+      -- },
       auto_install = true,
       highlight = {
         enable = true,
@@ -34,6 +40,8 @@ return {
     },
     config = function(_, opts)
       ---@diagnostic disable-next-line: missing-fields
+      vim.notify('Loading Treesitter parsers...' .. vim.inspect(parsers))
+      vim.notify('Treesitter parsers: ' .. vim.inspect(opts.ensure_installed))
       require('nvim-treesitter.configs').setup(opts)
     end,
   },

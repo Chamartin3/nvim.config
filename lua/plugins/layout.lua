@@ -1,6 +1,14 @@
 return {
   { 'tpope/vim-sleuth' }, -- Detect tabstop and shiftwidth automatically
   {
+    'kosayoda/nvim-lightbulb',
+    config = function()
+      require('nvim-lightbulb').setup {
+        autocmd = { enabled = true },
+      }
+    end,
+  },
+  {
     --  NOTE: Silly duck plugin
     'tamton-aquib/duck.nvim',
 

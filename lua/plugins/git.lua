@@ -124,4 +124,11 @@ return {
     -- TODO: Add a keybinding to open diffview in the source branch
     -- depending on the PR
   },
+  -- GitHub related plugins
+  { 'lukas-reineke/pr.nvim' },
+  { 'miniatureape/quickpr' },
+  -- {
+  --   'pwntester/octo.nvim',
+  --   BUG: Coflict with autosessions
+  -- },
 }
