@@ -7,9 +7,19 @@ return {
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      local linters_by_ft = require('lsp.languages.config').get_linters_by_ft
       local lint = require 'lint'
-      lint.linters_by_ft = linters_by_ft()
+      lint.linters_by_ft = {
+        python = { 'ruff' },
+        javascript = { 'eslint_d' },
+        typescript = { 'eslint_d' },
+        javascriptreact = { 'eslint_d' },
+        typescriptreact = { 'eslint_d' },
+        vue = { 'eslint_d' },
+        svelte = { 'eslint_d' },
+        zsh = { 'shellcheck' },
+        shell = { 'shellcheck' },
+        dockerfile = { 'hadolint' },
+      }
       -- lint.linters_by_ft = {V
       --   -- markdown = { 'markdownlint' },
       --   json = { 'jsonlint' },
