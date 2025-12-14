@@ -13,17 +13,29 @@ return { -- Autoformat
     },
   },
   opts = function()
-    local get_formatters_by_ft = require('lsp.languages.config').get_formatters_by_ft
-    -- formatters_by_ft = {
-    --   lua = { 'stylua' },
-    --   javascript = { 'prettier' },
-    --   typescript = { 'prettier' },
-    --   javascriptreact = { 'prettier' },
-    --   typescriptreact = { 'prettier' },
-    --   svelte = { 'prettier' },
     return {
       notify_on_error = false,
-      formatters_by_ft = get_formatters_by_ft(),
+      formatters_by_ft = {
+        python = { 'ruff', 'black' },
+        javascript = { 'prettier' },
+        typescript = { 'prettier' },
+        javascriptreact = { 'prettier' },
+        typescriptreact = { 'prettier' },
+        vue = { 'prettier' },
+        svelte = { 'prettier' },
+        html = { 'prettier' },
+        css = { 'prettier' },
+        scss = { 'prettier' },
+        pug = { 'prettier' },
+        json = { 'prettier' },
+        graphql = { 'prettier' },
+        yaml = { 'yamlfmt', 'prettier' },
+        lua = { 'stylua' },
+        go = { 'goimports' },
+        htmldjango = { 'djlint' },
+        zsh = { 'beautysh', 'shfmt' },
+        shell = { 'shfmt' },
+      },
       format_on_save = {
         timeout_ms = 2000,
         lsp_fallback = true,
