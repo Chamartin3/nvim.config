@@ -13,18 +13,15 @@ return {
     local dap = require 'dap'
     local dapui = require 'dapui'
 
-    -- local dap_adapters = require('lsp.languages.config').get_debuggers()
-
     require('mason-nvim-dap').setup {
-      -- Makes a best effort to setup the various debuggers with
-      -- reasonable debug configurations
       automatic_setup = true,
-
-      -- You can provide additional configuration to the handlers,
-      -- see mason-nvim-dap README for more information
       handlers = {},
-
-      ensure_installed = {},
+      ensure_installed = {
+        'debugpy',
+        'delve',
+        'local-lua-debugger-vscode',
+        'bash-debug-adapter',
+      },
     }
 
     -- Basic debugging keymaps, feel free to change to your liking!

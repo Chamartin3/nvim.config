@@ -1,47 +1,110 @@
 -- Treesitter configuration for Neovim
 --
--- local required_syntaxes = require('lsp.languages.config').get_parsers()
--- local parsers = require('lsp.languages.config').get_parsers()
--- vim.notify('Treesitter parsers: ' .. vim.inspect(parsers))
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
+    priority = 1000,
     build = ':TSUpdate',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
     opts = {
-      ensure_installed = {}, -- List of parsers to install
-      -- ensure_installed = parsers,
-      -- 'bash',
-      -- 'c',
-      -- 'scss',
-      -- 'json',
-      -- 'yaml',
-      -- 'svelte',
-      -- 'go',
-      -- 'typescript',
-      -- 'python',
-      -- 'sql',
-      -- 'html',
-      -- 'rust',
-      -- 'lua',
-      -- 'luadoc',
-      -- 'markdown',
-      -- 'markdown_inline',
-      -- 'vim',
-      -- 'vimdoc',
-      -- 'vue',
-      -- 'javascript',
-      -- },
       auto_install = true,
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = { 'ruby' },
+        additional_vim_regex_highlighting = false,
       },
-      indent = { enable = true, disable = { 'ruby' } },
+      indent = {
+        enable = true,
+      },
     },
     config = function(_, opts)
       ---@diagnostic disable-next-line: missing-fields
-      vim.notify('Loading Treesitter parsers...' .. vim.inspect(parsers))
-      vim.notify('Treesitter parsers: ' .. vim.inspect(opts.ensure_installed))
+      opts.ensure_installed = {
+        'python',
+        'htmldjango',
+        'lua',
+        'luadoc',
+        'go',
+        'javascript',
+        'typescript',
+        'vue',
+        'svelte',
+        'html',
+        'css',
+        'scss',
+        'pug',
+        'json',
+        'yaml',
+        'toml',
+        'graphql',
+        'sql',
+        'markdown',
+        'markdown_inline',
+        'vim',
+        'vimdoc',
+        'bash',
+        'dockerfile',
+        'cmake',
+        'solidity',
+      }
+      opts.textobjects = {
+        select = {
+          enable = true,
+          lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+          keymaps = {
+            -- You can use the capture groups defined in textobjects.scm
+            ['aa'] = '@parameter.outer',
+            ['ia'] = '@parameter.inner',
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+            ['ac'] = '@class.outer',
+            ['ic'] = '@class.inner',
+          },
+        },
+
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            [']m'] = '@function.outer',
+            [']]'] = '@class.outer',
+          },
+          goto_next_end = {
+            [']M'] = '@function.outer',
+            [']['] = '@class.outer',
+          },
+          goto_previous_start = {
+            ['[m'] = '@function.outer',
+            ['[['] = '@class.outer',
+          },
+          goto_previous_end = {
+            ['[M'] = '@function.outer',
+            ['[]'] = '@class.outer',
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ['<leader>]'] = '@parameter.inner',
+          },
+          swap_previous = {
+            ['<leader>[]'] = '@parameter.inner',
+          },
+        },
+      }
+      -- example: make gitsigns.nvim movement repeatable with ; and , keys.
+      local gs = require 'gitsigns'
+
+      -- make sure forward function comes first
+      --
+      local ts_repeat_move = require 'nvim-treesitter.textobjects.repeatable_move'
+      local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(gs.next_hunk, gs.prev_hunk)
+      -- Or, use `make_repeatable_move` or `set_last_move` functions for more control. See the code for instructions.
+
+      vim.keymap.set({ 'n', 'x', 'o' }, ']h', next_hunk_repeat)
+      vim.keymap.set({ 'n', 'x', 'o' }, '[h', prev_hunk_repeat)
       require('nvim-treesitter.configs').setup(opts)
     end,
   },

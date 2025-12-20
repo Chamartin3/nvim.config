@@ -59,6 +59,7 @@ return {
         },
       },
       'saadparwaiz1/cmp_luasnip',
+      'folke/lazydev.nvim',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lsp',
@@ -95,6 +96,7 @@ return {
       local sources = cmp.config.sources {
         { name = 'nvim_lsp' },
         { name = 'path' },
+        { name = 'lazydev', group_index = 0 },
         { name = 'copilot' },
         { name = 'buffer' },
         -- { name = 'env_vars' },
@@ -162,6 +164,10 @@ return {
       -- require('cmp_git').setup()
       --
     end,
+  },
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
   },
   {
     'windwp/nvim-autopairs',
@@ -237,133 +243,24 @@ return {
     end,
   },
   {
-    'yetone/avante.nvim',
-    event = 'VeryLazy',
+    'nickjvandyke/opencode.nvim',
+    version = '*',
     dependencies = {
-      'stevearc/dressing.nvim',
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-      'nvim-tree/nvim-web-devicons',
-      'HakonHarnes/img-clip.nvim',
-      'MeanderingProgrammer/render-markdown.nvim',
+      { 'folke/snacks.nvim', optional = true },
     },
-    version = false, -- Never set this value to "*"! Never!
-    build = function()
-      -- conditionally use the correct build system for the current OS
-      if vim.fn.has 'win32' == 1 then
-        return 'powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false'
-      else
-        return 'make'
-      end
-    end,
     config = function()
+      vim.g.opencode_opts = {}
+      vim.o.autoread = true
+
       local wk = require 'which-key'
       wk.add({
         { '<leader>a', name = 'AI', icon = '✨' },
-      }, {
-        mode = 'n',
-      })
+      }, { mode = 'n' })
 
-      local providers = {
-        claude = {
-          endpoint = 'https://api.anthropic.com',
-          model = 'claude-sonnet-4-20250514',
-          timeout = 30000,
-          extra_request_body = {
-            temperature = 0.75,
-            top_p = 0.95,
-          },
-        },
-        openai = {
-          endpoint = 'https://api.openai.com/v1',
-          model = 'gpt-4o',
-          extra_request_body = {
-            temperature = 0.75,
-            top_p = 0.95,
-          },
-          -- gemini = {
-          --   endpoint = 'https://generativelanguage.googleapis.com/v1beta/models',
-          --   model = 'gemini-2.0-flash',
-          --   -- @see https://ai.google.dev/gemini-api/docs/models/gemini
-          --   -- model = 'gemini-1.5-pro-exp-0827',
-          --   -- model = "gemini-1.5-flash",
-          --   temperature = 0,
-          --   max_tokens = 4096,
-          -- },
-        },
-      }
-      local avante = require 'avante'
-      avante.setup {
-        enabled = true,
-        provider = 'claude', -- Default provider
-        providers = providers,
-        input = {
-          provider = 'snacks',
-          provider_opts = {
-            -- Additional snacks.input options
-            title = 'Snacks Input',
-            icon = ' ',
-          },
-        },
-        file_selector = {
-          provider = 'snacks',
-          provider_opts = {},
-        },
-
-        windows = {
-          wrap = false,
-          input = {
-            height = 10,
-          },
-          ask = {
-            -- floating = true,
-          },
-        },
-        prompt_logger = {
-          enabled = true,
-          log_dir = vim.g.ai_logs_dir .. '/avante_prompts',
-          next_prompt = {
-            normal = '<C-n>',
-            insert = '<C-n>',
-          },
-          prev_prompt = {
-            normal = '<C-p>',
-            insert = '<C-p>',
-          },
-        },
-        keys = {
-          {
-            '<leader>a+',
-            function()
-              local tree_ext = require 'avante.extensions.nvim_tree'
-              tree_ext.add_file()
-            end,
-            desc = 'Select file in NvimTree',
-            ft = 'NvimTree',
-          },
-          {
-            '<leader>a-',
-            function()
-              local tree_ext = require 'avante.extensions.nvim_tree'
-              tree_ext.remove_file()
-            end,
-            desc = 'Deselect file in NvimTree',
-            ft = 'NvimTree',
-          },
-        },
-        -- Enable hints to appear in buffer
-        hints = { enabled = false },
-        -- Configure behavior for better hints display
-        behaviour = {
-          auto_suggestions = false,
-          auto_set_highlight_group = true,
-          auto_set_keymaps = true,
-          auto_apply_diff_after_generation = false,
-          support_paste_from_clipboard = false,
-          minimize_diff = true,
-          enable_token_counting = false,
-        },
-      }
+      vim.keymap.set({ 'n', 'x' }, '<leader>aa', function() require('opencode').ask('@this: ', { submit = true }) end, { desc = 'Ask opencode' })
+      vim.keymap.set({ 'n', 'x' }, '<leader>as', function() require('opencode').select() end, { desc = 'Opencode actions' })
+      vim.keymap.set({ 'n', 't' }, '<leader>at', function() require('opencode').toggle() end, { desc = 'Toggle opencode' })
+      vim.keymap.set({ 'n', 'x' }, '<leader>ao', function() return require('opencode').operator('@this ') end, { desc = 'Add range to opencode', expr = true })
     end,
   },
 }
