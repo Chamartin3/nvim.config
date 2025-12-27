@@ -1,4 +1,5 @@
-*.log 
+*.log
+lazy-lock.json
 
 lua/experiments/
 
