@@ -20,6 +20,12 @@ return {
         { '<leader>q', group = '[Q]uick Fix Lists', icon = '' },
         { '<leader>w', group = '[W]orkspace', icon = { color = 'yellow', icon = '' } },
         {
+          'cs',
+          desc = 'Surround',
+          icon = { icon = 'S', color = 'red' },
+        },
+
+        {
           '[d',
           desc = 'Previous Diagnostic',
           icon = { icon = '', color = 'red' },
@@ -123,7 +129,6 @@ return {
         bundled_plugin_cheatsheets = {
           enabled = {
             'auto-session',
-            'avante.nvim',
             'nvim-cmp',
             -- 'octo.nvim',
             'telescope.nvim',
