@@ -12,6 +12,18 @@ return {
         --   return vim.fn.system(cmd) == 'true\n'
         -- end,
         auto_session_suppress_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop/' },
+        post_restore_cmds = {
+          function()
+            -- Re-trigger filetype detection and BufRead so LSP/treesitter attach to restored buffers
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+              if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_name(buf) ~= '' then
+                vim.api.nvim_buf_call(buf, function()
+                  vim.cmd 'silent! edit'
+                end)
+              end
+            end
+          end,
+        },
         session_lens = {
           buftypes_to_ignore = {},
           load_on_setup = true,
